@@ -1,0 +1,8 @@
+# Define the goal
+float32[] total_pages
+---
+# Define the result
+bool is_finish
+---
+# Define a feedback message 
+float32 time_cost

@@ -1,0 +1,4 @@
+float32[] joints
+int64 vel
+---
+bool is_finish
