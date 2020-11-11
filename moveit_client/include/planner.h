@@ -25,7 +25,7 @@
 
 #define pi 3.1415926
 
-static const std::string PLANNING_GROUP = "arm";///这里指的是针对机器人对应group name进行分析
+static const std::string PLANNING_GROUP = "manipulator";///这里指的是针对机器人对应group name进行分析
 static const std::string base_link = "base_link";///这里指的是可视化中的基坐标系
 
 class planner {

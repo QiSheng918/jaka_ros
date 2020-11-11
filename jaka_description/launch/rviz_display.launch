@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<launch>
+	<!-- 参数定义 -->
+	<arg name="gui" default="true" />
+	<arg name="robot_package" value="$(find jaka_description)"/> <!--机器人描述包的路径-->
+	
+  	<!--加载robot_description-->
+  	<param name="robot_description" command="cat $(arg robot_package)/urdf/jaka_description.urdf" />
+
+  	<!--启动joint_state_publisher节点，并且使用gui-->
+	<node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" >
+		<param name="use_gui" value="$(arg gui)"/>
+	</node>
+	<!--启动robot_state_publisher节点-->
+	<node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+	<!--启动rviz节点-->
+	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg robot_package)/rviz/urdf.rviz" output="screen" />
+
+</launch>

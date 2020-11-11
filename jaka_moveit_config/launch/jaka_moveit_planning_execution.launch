@@ -1,0 +1,7 @@
+<launch>
+ <include file="$(find jaka_moveit_config)/launch/move_group.launch">
+<!--  <arg name="publish_monitored_planning_scene" value="true" />-->
+ </include>
+ # The visualization component of MoveIt!
+ <include file="$(find jaka_moveit_config)/launch/moveit_rviz.launch"/>
+</launch>

@@ -1,0 +1,11 @@
+moveit_setup_assistant_config:
+  URDF:
+    package: jaka_description
+    relative_path: urdf/jaka.urdf.xacro
+    xacro_args: "--inorder "
+  SRDF:
+    relative_path: config/jakaUr.srdf
+  CONFIG:
+    author_name: qisheng918
+    author_email: qi_sheng918@163.com
+    generated_timestamp: 1605094339

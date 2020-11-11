@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- 把关节控制器的配置加载到参数服务器 configurations from YAML file to parameter server -->
+  <rosparam file="$(find jaka_description)/config/jaka_ur_gazebo_joint_states.yaml" command="load"/>
+
+  <!-- 启动关节控制器 -->
+  <node name="joint_controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+		output="screen" ns="/jakaUr" args="joint_state_controller" />
+
+  <!-- 把 joint states 转换成 TF transforms 为 rviz使用, etc -->
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+	respawn="false" output="screen">
+    <!--remap from="/joint_states" to="/jaka_ur/joint_states" /-->
+    <remap from="/joint_states" to="/jakaUr/joint_states" />
+    <param name="publish_frequency" type="double" value="30.0" />
+
+  </node>
+
+</launch>
+
+
