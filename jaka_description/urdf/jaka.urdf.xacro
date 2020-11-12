@@ -243,7 +243,7 @@
 
     <joint name="joint_6" type="revolute">
         <axis xyz="0 0 1"/>
-        <limit effort="1000" lower="-3.14159265358" upper="3.14159265358" velocity="0.5"/>
+        <limit effort="1000" lower="${-3*pi/2.0}" upper="${3*pi/2.0}" velocity="0.5"/>
         <origin rpy="${-pi/2.0} 0 0" xyz="0 0.093 0"/>
         <parent link="link_5"/>
         <child link="link_6"/>

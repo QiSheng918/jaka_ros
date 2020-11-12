@@ -11,6 +11,7 @@
 
 #define JNUMBER 6
 #define PI 3.1415926
+const double rad2deg=180/3.1415926;
 
 typedef actionlib::SimpleActionServer<control_msgs::FollowJointTrajectoryAction> ActionServer;
 ros::Publisher command_pub;
@@ -65,21 +66,23 @@ void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& go
 		command_msg.type=11;
 		command_msg.servo_enable_flag=1;
 		command_pub.publish(command_msg);
-		// ros::Duration(1).sleep(); 
-
+		// ros::Duration(0.5).sleep(); 
+        loop_rate.sleep();
 		command_msg.type=12;
 		command_msg.joint.resize(6);
 		for(int i=0; i<6; i++) command_msg.joint[i]=0;
+		std::cout<<all_points[0].size()<<std::endl;
 		for(int j=0;j<all_points[0].size();j++){
 			for(int i=0; i<6; i++){
-				command_msg.joint[i]=all_points[i][j];
+				command_msg.joint[i]=all_points[i][j]*rad2deg;
 				joint_state_msg.position[i]=all_points[i][j];
 			}
 			joint_state_pub.publish(joint_state_msg);
 			command_pub.publish(command_msg);
 			loop_rate.sleep();
 		}
-		// ros::Duration(1).sleep(); 
+		loop_rate.sleep();
+		// ros::Duration(0.5).sleep(); 
 		command_msg.type=11;
 		command_msg.servo_enable_flag=0;
 		command_pub.publish(command_msg);
