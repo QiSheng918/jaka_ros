@@ -132,14 +132,14 @@ include_directories(SYSTEM ${THIS_PACKAGE_INCLUDE_DIRS} ${Boost_INCLUDE_DIR} ${E
 include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS})
 
-add_executable(planner src/planner.cpp)
-target_link_libraries(planner ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_executable(planner src/planner.cpp)
+# target_link_libraries(planner ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(test_moveit src/test_movit.cpp)
-target_link_libraries(test_moveit ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_executable(test_moveit src/test_movit.cpp)
+# target_link_libraries(test_moveit ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
-add_executable(robot_action src/robot_action.cpp)
-target_link_libraries(robot_action ${catkin_LIBRARIES} ${Boost_LIBRARIES})
+# add_executable(robot_action src/robot_action.cpp)
+# target_link_libraries(robot_action ${catkin_LIBRARIES} ${Boost_LIBRARIES})
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
