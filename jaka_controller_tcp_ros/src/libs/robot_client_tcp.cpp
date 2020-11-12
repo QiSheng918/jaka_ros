@@ -361,7 +361,7 @@ void RobotClient::GetRobotPose(std::vector<float>&joint, std::vector<float>&cart
 		exit(-1);
 	}
     // 延时0.1s，以便于接受完所有信息
-	usleep(2000);
+	usleep(10000);
 	int rec_len = recv(socketrqt, buf, MAXLINE, 0);
 	buf[rec_len] = '\0';
 	// std::cout << "Reveived: " << buf << std::endl;
@@ -391,7 +391,7 @@ void RobotClient::GetRobotPose(std::vector<float>&joint, std::vector<float>&cart
 					std::cout << "send msg error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
 					exit(-1);
 				}
-				usleep(2e5);
+				usleep(10000);
 				int rec_len = recv(socketrqt, buf, MAXLINE, 0);
 				buf[rec_len] = '\0';
 				// std::cout << "Reveived: " << buf << std::endl;
@@ -404,7 +404,7 @@ void RobotClient::GetRobotPose(std::vector<float>&joint, std::vector<float>&cart
 				std::cout << "send msg error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
 				exit(-1);
 			}
-			usleep(2e5);
+			usleep(10000);
 			int rec_len = recv(socketrqt, buf, MAXLINE, 0);
 			buf[rec_len] = '\0';
 			// std::cout << "Reveived: " << buf << std::endl;

@@ -45,6 +45,10 @@ target_link_libraries(${PROJECT_NAME} ${catkin_LIBRARIES} ${OpenCV_LIBS} jsoncpp
 add_executable(jaka_ros_node src/jaka_ros_node.cpp)
 target_link_libraries(jaka_ros_node ${PROJECT_NAME})
 
+
+add_executable(jaka_state_pub_node src/jaka_state_pub_node.cpp)
+target_link_libraries(jaka_state_pub_node ${PROJECT_NAME})
+
 add_executable(jaka_robot_client_tcp_test src/robot_client_tcp_test.cpp)
 target_link_libraries(jaka_robot_client_tcp_test ${PROJECT_NAME})
 
