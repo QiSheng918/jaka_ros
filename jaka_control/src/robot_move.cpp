@@ -8,6 +8,7 @@
 #include <vector>
 #include <cstdio>
 #include "jaka_control/cubicSpline.h"
+#include <universal_msgs/Command.h>
 #define JNUMBER 6
 #define PI 3.1415926
 #define AXIS_COUNT 6
@@ -71,11 +72,15 @@ int main(int argc, char **argv)
 	ros::NodeHandle n;
 	// 订阅关节路径命令
 	ros::Subscriber sub=n.subscribe("joint_path_command",10,chatterCB);
+	ros::Publisher pub=n.advertise<universal_msgs::Command>("command",1);
+	universal_msgs::Command command_msg;
 	// 定义机器人
 	int count=0;
 	ros::Rate loop_rate(125);
 	
-
+	command_msg.type=11;
+	command_msg.servo_enable_flag=1;
+	pub.publish(command_msg);
 	
 
 	int j = 0;
@@ -102,6 +107,9 @@ int main(int argc, char **argv)
 			//
 			//cout<<pos[0]<<endl;
 			// robot.jointMove(pos,10);
+			command_msg.type=12;
+			command_msg.joint=pos;
+			pub.publish(command_msg);
 			ros::spinOnce();
 			loop_rate.sleep();
 		}
@@ -116,7 +124,9 @@ int main(int argc, char **argv)
 	printf("sleeping!\n");
 	sleep(10);
 	printf("enable shut down!\n");
-
+	command_msg.type=11;
+	command_msg.servo_enable_flag=0;
+	pub.publish(command_msg);
 	// reply=robot.ServoJEnable(false);
 	// std::cout<<"servoj enable "<<reply<<std::endl;
 	//  robot.stop();
