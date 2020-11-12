@@ -184,13 +184,14 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "jaka_ros_node");
 	jaka_ros_node node;
 
-	ros::Rate loop_rate(125);
-	while(ros::ok())
-	{
-		node.pubRobotPoseOnce();
-		ros::spinOnce();
-		loop_rate.sleep();
-	}
+	ros::spin();
+	// ros::Rate loop_rate(125);
+	// while(ros::ok())
+	// {
+	// 	// node.pubRobotPoseOnce();
+	// 	ros::spinOnce();
+	// 	loop_rate.sleep();
+	// }
 
 	return 0;
 }

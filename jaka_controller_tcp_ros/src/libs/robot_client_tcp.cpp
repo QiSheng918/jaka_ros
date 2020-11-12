@@ -361,7 +361,7 @@ void RobotClient::GetRobotPose(std::vector<float>&joint, std::vector<float>&cart
 		exit(-1);
 	}
     // 延时0.1s，以便于接受完所有信息
-	usleep(10000);
+	usleep(4000);
 	int rec_len = recv(socketrqt, buf, MAXLINE, 0);
 	buf[rec_len] = '\0';
 	// std::cout << "Reveived: " << buf << std::endl;

@@ -15,7 +15,7 @@ const double rad2deg=180/3.1415926;
 
 typedef actionlib::SimpleActionServer<control_msgs::FollowJointTrajectoryAction> ActionServer;
 ros::Publisher command_pub;
-ros::Publisher joint_state_pub;
+// ros::Publisher joint_state_pub;
 
 void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& goal, ActionServer* as)
 {
@@ -55,13 +55,7 @@ void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& go
 
 
 		ros::Rate loop_rate(125);
-		sensor_msgs::JointState joint_state_msg;
-		joint_state_msg.name.resize(6);
-		joint_state_msg.position.resize(6);
-		for(int i=0;i<6;i++){
-			joint_state_msg.name[i]="joint_"+std::to_string(i+1);
-			joint_state_msg.position[i]=0;
-		}
+
 		universal_msgs::Command command_msg;
 		command_msg.type=11;
 		command_msg.servo_enable_flag=1;
@@ -75,14 +69,12 @@ void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& go
 		for(int j=0;j<all_points[0].size();j++){
 			for(int i=0; i<6; i++){
 				command_msg.joint[i]=all_points[i][j]*rad2deg;
-				joint_state_msg.position[i]=all_points[i][j];
 			}
-			joint_state_pub.publish(joint_state_msg);
 			command_pub.publish(command_msg);
 			loop_rate.sleep();
 		}
-		loop_rate.sleep();
-		// ros::Duration(0.5).sleep(); 
+		// loop_rate.sleep();
+		ros::Duration(0.5).sleep(); 
 		command_msg.type=11;
 		command_msg.servo_enable_flag=0;
 		command_pub.publish(command_msg);
@@ -98,7 +90,7 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 
 	command_pub=nh.advertise<universal_msgs::Command>("command",1);
-	joint_state_pub=nh.advertise<sensor_msgs::JointState>("my_joint_states",1);
+	// joint_state_pub=nh.advertise<sensor_msgs::JointState>("my_joint_states",1);
 	//Start the ActionServer for JointTrajectoryActions and GripperCommandActions from MoveIT
 	ActionServer action_server(nh, "arm_controller/follow_joint_trajectory", boost::bind(&executeTrajectory, _1, &action_server), false);
   	ROS_INFO("TrajectoryActionServer: Starting");

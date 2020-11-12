@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/seven/jaka_ws/devel/include/**",
+                "/opt/ros/melodic/include/**",
+                "/home/seven/jaka_ws/src/jaka_ros/jaka_control/include/**",
+                "/home/seven/jaka_ws/src/jaka_ros/jaka_controller_tcp_ros/include/**",
+                "/home/seven/jaka_ws/src/jaka_ros/moveit_client/include/**",
+                "/usr/include/**"
+            ],
+            "name": "ROS",
+            "intelliSenseMode": "gcc-x64",
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++14"
+        }
+    ],
+    "version": 4
+}
