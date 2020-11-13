@@ -145,9 +145,4 @@ target_link_libraries(jaka_control_node
   ${catkin_LIBRARIES}
 )
 
-# add_executable(jaka_robot_move_node src/robot_move.cpp src/cubicSpline.cpp)
-# target_link_libraries(jaka_robot_move_node
-#   ${catkin_LIBRARIES}
-# )
-
 

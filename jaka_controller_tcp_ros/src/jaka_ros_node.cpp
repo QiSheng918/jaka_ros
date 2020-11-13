@@ -31,50 +31,16 @@ public:
 		robotclient.PowerOn();
 		robotclient.Enable();
 		cmd_sub=nh.subscribe(command_Topic_Name, 1, &jaka_ros_node::CommandCallback,this);
-		
-		// joint_state_msg.name.resize(6);
-		// joint_state_msg.position.resize(6);
-
-		// for(int i=0;i<6;i++){
-		// 	joint_state_msg.name[i]="joint_"+std::to_string(i+1);
-		// 	joint_state_msg.position[0]=0;
-		// }
-		// robot_pub=nh.advertise<universal_msgs::RobotMsg>(robotMsg_Topic_Name, 1);
-		// joint_state_pub=nh.advertise<sensor_msgs::JointState>("joint_states", 1);
-
 	}
-	// void start();
-	// void stop();
-	int pubRobotPoseOnce();
-
+	
 private:
 	ros::NodeHandle nh;
 	ros::Subscriber cmd_sub;
 	std::string robot_ip;
-	// ros::Publisher robot_pub,joint_state_pub;
 	RobotClient robotclient;
 	void CommandCallback(const universal_msgs::Command::ConstPtr &msg);
 };
 
-
-
-// void jaka_ros_node::start()
-// {
-// 	int reply_int = robotclient.LogIn(username, password);
-// 	robotclient.MtnAbort();
-// 	return;
-// }
-
-// void jaka_ros_node::stop()
-// {
-// 	printf("stoping the robot!\n");
-// 	robotclient.MtnAbort();
-// 	sleep(1);
-// 	printf("ready to shut down!\n");
-
-// 	int reply_int = robotclient.LogOut(username, password);
-// 	return;
-// }
 
 void jaka_ros_node::CommandCallback(const universal_msgs::Command::ConstPtr &msg)
 {
@@ -149,55 +115,11 @@ void jaka_ros_node::CommandCallback(const universal_msgs::Command::ConstPtr &msg
 	}
 }
 
-// int jaka_ros_node::pubRobotPoseOnce()
-// {
-// 	std::vector<float> jnt;
-// 	std::vector<float> cart;
-// 	robotclient.GetRobotPose(jnt, cart);
-
-// 	std::vector<double> q_actual(6,0.0);
-// 	std::vector<double> tool_vector(6,0.0);
-// 	for (int i = 0; i < 6; ++i)
-// 	{
-// 		q_actual[i]=double(jnt[i]);
-// 		tool_vector[i]=double(cart[i]);
-// 	}
-
-// 	// std::cout << "Joint: [ " << q_actual[0] << ", " << q_actual[1] << ", " << q_actual[2]
-// 	// << ", " << q_actual[3] << ", " << q_actual[4] << ", " << q_actual[5] << " ]" << std::endl;
-// 	// std::cout << "Cart: [ " << tool_vector[0] << ", " << tool_vector[1] << ", " << tool_vector[2]
-// 	// << ", " << tool_vector[3] << ", " << tool_vector[4] << ", " << tool_vector[5] << " ]" << std::endl;
-
-// 	universal_msgs::RobotMsg msg;
-// 	msg.header.stamp = ros::Time::now();
-// 	msg.data.q_actual=q_actual;
-// 	msg.data.tool_vector=tool_vector;
-// 	robot_pub.publish(msg);
-
-	
-// 	joint_state_msg.header.stamp=ros::Time::now();
-// 	for(int i=0;i<6;i++) joint_state_msg.position[i]=q_actual[i]*deg2rad;
-// 	joint_state_pub.publish(joint_state_msg);
-// 	return 0;
-// }
-
 
 int main(int argc, char **argv)
 {
-	// if (argc == 2) robot_IP = argv[1];
 	ros::init(argc, argv, "jaka_ros_node");
 	jaka_ros_node node;
-
 	ros::spin();
-
-
-	// ros::Rate loop_rate(125);
-	// while(ros::ok())
-	// {
-	// 	// node.pubRobotPoseOnce();
-	// 	ros::spinOnce();
-	// 	loop_rate.sleep();
-	// }
-
 	return 0;
 }

@@ -33,9 +33,17 @@ And move `universal_msgs` package from `jaka_controller_tcp_ros/dependency/` to 
 sudo apt install ros-kinetic-universal-robot
 ```
 
+## Package description
+
+1. `jaka_ros_node` is the node of receiving control command and send it to the robot using TCP/IP protocol
+
+2. `jaka_state_pub_node` is the node of receiving the state information that robot sent and publish the information using ros topic
+
+3. `jaka_shutdown_node` is the node to shutdown the connection between robot and computer, when your connection is wrong
+
 ## Build and Test
 
-Change `robot_IP` in `jaka_ros_node.cpp` or set `robot_IP` dynamically using argv[1]
+Change `address` in `jaka_ros_node.cpp` and `jaka_state_pub_node` or set `robot_ip` in `jaka_bringup.launch`
 
 build:
 
@@ -49,17 +57,5 @@ run:
 open one terminal and run:
 
 ```bash
-roscore
-```
-
-open another terminal and run:
-
-```bash
-rosrun jaka_controller_tcp_ros jaka_ros_node
-```
-
-or set `robot_IP` dynamically using argv[1]:
-
-```bash
-rosrun jaka_controller_tcp_ros jaka_ros_node 192.168.x.x
+roslaunch jaka_controller_tcp_ros jaka_bringup.launch
 ```

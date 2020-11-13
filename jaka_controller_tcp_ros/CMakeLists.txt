@@ -52,5 +52,5 @@ target_link_libraries(jaka_state_pub_node ${PROJECT_NAME})
 # add_executable(jaka_robot_client_tcp_test src/robot_client_tcp_test.cpp)
 # target_link_libraries(jaka_robot_client_tcp_test ${PROJECT_NAME})
 
-add_executable(jaka_Shutdown src/jaka_Shutdown.cpp)
-target_link_libraries(jaka_Shutdown ${PROJECT_NAME})
+add_executable(jaka_shutdown_node src/jaka_shutdown.cpp)
+target_link_libraries(jaka_shutdown_node ${PROJECT_NAME})
