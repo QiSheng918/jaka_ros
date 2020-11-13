@@ -26,13 +26,14 @@ int main(int argc, char **argv)
 	
 	ros::init(argc, argv, "jaka_state_node");
 	ros::NodeHandle nh;
+	std::string robot_ip;
 
+	robot_ip=nh.param("robot_ip",address);
 
     ros::Publisher jaka_joint_state_pub=nh.advertise<sensor_msgs::JointState>("joint_states", 1);
     ros::Publisher jaka_pose_pub=nh.advertise<universal_msgs::RobotMsg>("jaka_pose", 1);
 
     sensor_msgs::JointState joint_state_msg;
-
     joint_state_msg.name.resize(6);
     joint_state_msg.position.resize(6);
     for(int i=0;i<6;i++){
@@ -40,11 +41,11 @@ int main(int argc, char **argv)
         joint_state_msg.position[0]=0;
     }
 
-
+	//建立socket通讯
     int socketrqt;
     struct sockaddr_in servaddr_rqt;
-	std::cout << "Connecting to IP address : " << address << std::endl;
-	const char *address_ptr = address.c_str();
+	std::cout << "state_pub_node connecting to IP address : " << robot_ip << std::endl;
+	const char *address_ptr = robot_ip.c_str();
     // 创建socketrqt
 	if ((socketrqt = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
 		std::cout << "create socket error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
@@ -65,62 +66,55 @@ int main(int argc, char **argv)
 		std::cout << "connect error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
 		exit(-1);
 	}
-	std::cout << "Socket connects successfully!" << std::endl;
+	std::cout << "state_pub_node socket connects successfully!" << std::endl;
 
-
+	
     Json::Reader reader;
     Json::Value root;
-
-    ros::Rate loop_rate(400);
     while(ros::ok()){
-
         char buf[MAXLINE];
         int rec_len = recv(socketrqt, buf, MAXLINE, 0);
 	    buf[rec_len] = '\0';
-        
-
-        
-        std::cout<<rec_len<<std::endl;
-        std::cout<<buf<<std::endl;
-        std::vector<double> q_actual(6,0.0);
-	    std::vector<double> tool_vector(6,0.0);
-        try{
-            if (reader.parse(buf, root)) {
+        // std::cout<<rec_len<<std::endl;
+        // std::cout<<buf<<std::endl;
+		
+		//解析收到的字节流获取机器人状态信息
+		std::vector<double> q_actual(6,0.0);
+		std::vector<double> tool_vector(6,0.0);
+		try{
+			if (reader.parse(buf, root)) {
 			int joint_size = root["joint_actual_position"].size();
 			int cart_size = root["actual_position"].size();
-            if(joint_size==6 && cart_size==6){
-                for (Json::Value::ArrayIndex i = 0; i < joint_size; ++i) {
-                        q_actual[(int) i] = root["joint_actual_position"][i].asDouble();
-                }
-                for (Json::Value::ArrayIndex i = 0; i < cart_size; ++i) {
-                        tool_vector[(int) i] = root["actual_position"][i].asDouble();
-                }
-            
-                joint_state_msg.header.stamp=ros::Time::now();
-                for(int i=0;i<6;i++) joint_state_msg.position[i]=q_actual[i]*deg2rad;
-                jaka_joint_state_pub.publish(joint_state_msg);
+			if(joint_size==6 && cart_size==6){
+				for (Json::Value::ArrayIndex i = 0; i < joint_size; ++i) {
+						q_actual[(int) i] = root["joint_actual_position"][i].asDouble();
+				}
+				for (Json::Value::ArrayIndex i = 0; i < cart_size; ++i) {
+						tool_vector[(int) i] = root["actual_position"][i].asDouble();
+				}
+			
+				joint_state_msg.header.stamp=ros::Time::now();
+				for(int i=0;i<6;i++) joint_state_msg.position[i]=q_actual[i]*deg2rad;
+				jaka_joint_state_pub.publish(joint_state_msg);
 
-                universal_msgs::RobotMsg msg;
-                msg.header.stamp = ros::Time::now();
-                msg.data.q_actual=q_actual;
-                msg.data.tool_vector=tool_vector;
-                jaka_pose_pub.publish(msg);
+				universal_msgs::RobotMsg msg;
+				msg.header.stamp = ros::Time::now();
+				msg.data.q_actual=q_actual;
+				msg.data.tool_vector=tool_vector;
+				jaka_pose_pub.publish(msg);
 
-                // std::cout << "Joint: [ " << q_actual[0] << ", " << q_actual[1] << ", " << q_actual[2]
-                //         << ", " << q_actual[3] << ", " << q_actual[4] << ", " << q_actual[5] << " ]" << std::endl;
-                // std::cout << "Cart: [ " << tool_vector[0] << ", " << tool_vector[1] << ", " << tool_vector[2]
-                //         << ", " << tool_vector[3] << ", " << tool_vector[4] << ", " << tool_vector[5] << " ]" << std::endl;
-                } 
-            }   
-        }
-        catch(...){
-            ;
-        }
-        
-        loop_rate.sleep();
-
+				std::cout << "Joint: [ " << q_actual[0] << ", " << q_actual[1] << ", " << q_actual[2]
+						<< ", " << q_actual[3] << ", " << q_actual[4] << ", " << q_actual[5] << " ]" << std::endl;
+				std::cout << "Cart: [ " << tool_vector[0] << ", " << tool_vector[1] << ", " << tool_vector[2]
+						<< ", " << tool_vector[3] << ", " << tool_vector[4] << ", " << tool_vector[5] << " ]" << std::endl;
+				} 
+			}   
+		}
+		catch(...){}
     }
+
+	//关闭socket连接
     close(socketrqt);
-	// std::cout<<"Class RobotClient Unconstructed!"<<std::endl;
+	std::cout<<"Robot disconnected!"<<std::endl;
     return 0;
 }

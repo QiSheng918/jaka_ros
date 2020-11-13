@@ -3,6 +3,6 @@
 
 int main(int argc, char **argv)
 {
-	RobotClient robotclient("192.168.51.15");
+	RobotClient robotclient("192.168.51.188");
 	return 0;
 }

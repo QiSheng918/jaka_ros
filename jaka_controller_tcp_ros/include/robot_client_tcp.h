@@ -58,7 +58,10 @@ public:
     void MoveJ(const std::vector<float> &joint_vector, const float &velocity);
 
     //进入伺服运动模式
-    void ServoEnable(const int &val);
+    void ServoJEnable();
+
+    //退出伺服运动模式
+    void ServoJDisable();
 
     //伺服关节运动模式
     void ServoJ(const std::vector<float> &joint_vector);

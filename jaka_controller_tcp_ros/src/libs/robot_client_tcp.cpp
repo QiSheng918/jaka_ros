@@ -223,10 +223,34 @@ void RobotClient::ServoJ(const std::vector<float> &joint_vector) {
 }
 
 
-void RobotClient::ServoEnable(const int &val) {
-	std::cout << "RobotClient::Servo Control!" << std::endl;
+void RobotClient::ServoJEnable() {
+	std::cout << "RobotClient::ServoJ Enable!" << std::endl;
 
-	string_tmp = "{\"cmdName\":\"servo_move\",\"relFlag\":"+std::to_string(val)+"}";
+	string_tmp = "{\"cmdName\":\"servo_move\",\"relFlag\":1}";
+	cmd_ptr = string_tmp.c_str();
+	if (send(socketrqt, cmd_ptr, strlen(cmd_ptr), 0) < 0) {
+		std::cout << "send msg error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
+		exit(-1);
+	}
+	int rec_len = recv(socketrqt, buf, MAXLINE, 0);
+	buf[rec_len] = '\0';
+	// std::cout << "Reveived: " << buf << std::endl;
+
+	string_tmp = "{\"cmdName\":\"wait_complete\"}";
+	cmd_ptr = string_tmp.c_str();
+	if (send(socketrqt, cmd_ptr, strlen(cmd_ptr), 0) < 0) {
+		std::cout << "send msg error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;
+		exit(-1);
+	}
+	rec_len = recv(socketrqt, buf, MAXLINE, 0);
+	buf[rec_len] = '\0';
+	// std::cout << "Reveived: " << buf << std::endl;
+}
+
+void RobotClient::ServoJDisable() {
+	std::cout << "RobotClient::ServoJ Disable!" << std::endl;
+
+	string_tmp = "{\"cmdName\":\"servo_move\",\"relFlag\":0}";
 	cmd_ptr = string_tmp.c_str();
 	if (send(socketrqt, cmd_ptr, strlen(cmd_ptr), 0) < 0) {
 		std::cout << "send msg error:" << strerror(errno) << "(errno:" << errno << ")" << std::endl;

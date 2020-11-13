@@ -15,14 +15,15 @@ const double rad2deg=180/3.1415926;
 
 typedef actionlib::SimpleActionServer<control_msgs::FollowJointTrajectoryAction> ActionServer;
 ros::Publisher command_pub;
-// ros::Publisher joint_state_pub;
+
 
 void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& goal, ActionServer* as)
 {
-    ROS_INFO("get the moveit planning result");
+    ROS_INFO("GET MOVEIT PLANNING RESULT");
     trajectory_msgs::JointTrajectory msg=goal->trajectory;
 	if((int)msg.points.size() != 0)
 	{
+		ROS_INFO("START SPLINE INTERCEPT");
 		cubicSpline spline;
 
 		int points_count= msg.points.size();                        //获取规划后点的个数
@@ -55,14 +56,14 @@ void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& go
 
 
 		ros::Rate loop_rate(125);
-
+		ROS_INFO("SERVOJ ENABLED");
 		universal_msgs::Command command_msg;
 		command_msg.type=11;
-		command_msg.servo_enable_flag=1;
 		command_pub.publish(command_msg);
 		// ros::Duration(0.5).sleep(); 
         loop_rate.sleep();
-		command_msg.type=12;
+		ROS_INFO("SERVOJ MOVE");
+		command_msg.type=13;
 		command_msg.joint.resize(6);
 		for(int i=0; i<6; i++) command_msg.joint[i]=0;
 		std::cout<<all_points[0].size()<<std::endl;
@@ -73,10 +74,10 @@ void executeTrajectory(const control_msgs::FollowJointTrajectoryGoalConstPtr& go
 			command_pub.publish(command_msg);
 			loop_rate.sleep();
 		}
-		// loop_rate.sleep();
-		ros::Duration(0.5).sleep(); 
-		command_msg.type=11;
-		command_msg.servo_enable_flag=0;
+
+		ros::Duration(0.5).sleep();
+		ROS_INFO("SERVOJ DISABLED");
+		command_msg.type=12;
 		command_pub.publish(command_msg);
 	}
 
@@ -90,7 +91,6 @@ int main(int argc, char** argv)
 	ros::NodeHandle nh;
 
 	command_pub=nh.advertise<universal_msgs::Command>("command",1);
-	// joint_state_pub=nh.advertise<sensor_msgs::JointState>("my_joint_states",1);
 	//Start the ActionServer for JointTrajectoryActions and GripperCommandActions from MoveIT
 	ActionServer action_server(nh, "arm_controller/follow_joint_trajectory", boost::bind(&executeTrajectory, _1, &action_server), false);
   	ROS_INFO("TrajectoryActionServer: Starting");
