@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="jaka_hand">
-  <xacro:include filename="./jaka.urdf.xacro"/>
-  <xacro:include filename="./hand.xacro"/>
-
-  <xacro:hand ns="jaka" rpy="${pi} 0 ${3*pi/4}" xyz="0 0 -0.08" connected_to="link_6"/>
-</robot>

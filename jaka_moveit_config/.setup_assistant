@@ -4,8 +4,8 @@ moveit_setup_assistant_config:
     relative_path: urdf/jaka.urdf.xacro
     xacro_args: "--inorder "
   SRDF:
-    relative_path: config/jakaUr.srdf
+    relative_path: config/jaka_description.srdf
   CONFIG:
-    author_name: qisheng918
+    author_name: qi_sheng918
     author_email: qi_sheng918@163.com
-    generated_timestamp: 1605094339
+    generated_timestamp: 1619964848

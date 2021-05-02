@@ -3,10 +3,10 @@
   <name>jaka_moveit_config</name>
   <version>0.3.0</version>
   <description>
-     An automatically generated package with all the configuration and launch files for using the jakaUr with the MoveIt! Motion Planning Framework
+     An automatically generated package with all the configuration and launch files for using the jaka_description with the MoveIt! Motion Planning Framework
   </description>
-  <author email="qi_sheng918@163.com">qisheng918</author>
-  <maintainer email="qi_sheng918@163.com">qisheng918</maintainer>
+  <author email="qi_sheng918@163.com">qi_sheng918</author>
+  <maintainer email="qi_sheng918@163.com">qi_sheng918</maintainer>
 
   <license>BSD</license>
 

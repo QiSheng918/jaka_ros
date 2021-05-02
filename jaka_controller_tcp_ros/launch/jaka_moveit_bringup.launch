@@ -1,5 +1,5 @@
 <launch>
-  <arg name="robot_ip" default="192.168.51.188"/>
+  <arg name="robot_ip" default="10.5.5.100"/>
   
   <include file="$(find jaka_moveit_config)/launch/jaka_moveit_planning_execution.launch"/>
   <include file="$(find jaka_controller_tcp_ros)/launch/jaka_bringup.launch">

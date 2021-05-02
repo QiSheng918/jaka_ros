@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     joint_state_msg.name.resize(6);
     joint_state_msg.position.resize(6);
     for(int i=0;i<6;i++){
-        joint_state_msg.name[i]="joint_"+std::to_string(i+1);
+        joint_state_msg.name[i]="joint"+std::to_string(i+1);
         joint_state_msg.position[0]=0;
     }
 
